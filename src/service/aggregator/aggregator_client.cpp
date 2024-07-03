@@ -460,13 +460,7 @@ bool AggregatorClient::GenStatelessBatchProof (const aggregator::v1::GenStateles
     ba2scalar(pProverRequest->input.publicInputsExtended.publicInputs.oldAccInputHash, genStatelessBatchProofRequest.input().public_inputs().old_acc_input_hash());
 
     // Get oldBatchNum
-    if (batch.batchNumber == 0)
-    {
-        zklog.error("AggregatorClient::GenStatelessBatchProof() called dataStream2batch() but got batch.batchNumber=0", &pProverRequest->tags);
-        genBatchProofResponse.set_result(aggregator::v1::Result::RESULT_ERROR);
-        return false;
-    }
-    pProverRequest->input.publicInputsExtended.publicInputs.oldBatchNum = batch.batchNumber - 1;
+    pProverRequest->input.publicInputsExtended.publicInputs.oldBatchNum = batch.batchNumber;
 
     // Get chain ID
     pProverRequest->input.publicInputsExtended.publicInputs.chainID = batch.chainId;
@@ -893,11 +887,9 @@ void* aggregatorClientThread(void* arg)
                     break;
                 case aggregator::v1::AggregatorMessage::RequestCase::kGetStatusRequest:
                 case aggregator::v1::AggregatorMessage::RequestCase::kGenBatchProofRequest:
+                case aggregator::v1::AggregatorMessage::RequestCase::kGenStatelessBatchProofRequest:
                 case aggregator::v1::AggregatorMessage::RequestCase::kCancelRequest:
                     zklog.info("aggregatorClientThread() got: " + aggregatorMessage.ShortDebugString());
-                    break;
-                case aggregator::v1::AggregatorMessage::RequestCase::kGenStatelessBatchProofRequest:
-                    zklog.info("aggregatorClientThread() got genStatelessBatchProof() request");
                     break;
                 case aggregator::v1::AggregatorMessage::RequestCase::kGenAggregatedProofRequest:
                     zklog.info("aggregatorClientThread() got genAggregatedProof() request");

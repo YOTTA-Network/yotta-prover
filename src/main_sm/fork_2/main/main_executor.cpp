@@ -1023,11 +1023,11 @@ void MainExecutor::execute (ProverRequest &proverRequest, MainCommitPols &pols, 
 #ifdef LOG_TIME_STATISTICS_MAIN_EXECUTOR
                     mainMetrics.add("SMT Get", TimeDiff(t));
 #endif
+                    }
 
-                        if (bProcessBatch)
-                        {
-                            eval_addReadWriteAddress(ctx, smtGetResult.value, key);
-                        }
+                    if (bProcessBatch)
+                    {
+                        eval_addReadWriteAddress(ctx, smtGetResult.value);
                     }
 
 #ifdef LOG_TIME_STATISTICS_MAIN_EXECUTOR
@@ -1253,7 +1253,7 @@ void MainExecutor::execute (ProverRequest &proverRequest, MainCommitPols &pols, 
                     }
                     if (bProcessBatch)
                     {
-                        eval_addReadWriteAddress(ctx, value, ctx.lastSWrite.key);
+                        eval_addReadWriteAddress(ctx, value);
                     }
 
                     // If we just modified a balance
@@ -1960,7 +1960,7 @@ void MainExecutor::execute (ProverRequest &proverRequest, MainCommitPols &pols, 
 
             if (bProcessBatch)
             {
-                eval_addReadWriteAddress(ctx, smtGetResult.value, key);
+                eval_addReadWriteAddress(ctx, smtGetResult.value);
             }
 
 #ifdef LOG_TIME_STATISTICS_MAIN_EXECUTOR
@@ -2102,7 +2102,7 @@ void MainExecutor::execute (ProverRequest &proverRequest, MainCommitPols &pols, 
 
                 if (bProcessBatch)
                 {
-                    eval_addReadWriteAddress(ctx, scalarD, ctx.lastSWrite.key);
+                    eval_addReadWriteAddress(ctx, scalarD);
                 }
 
                 // If we just modified a balance

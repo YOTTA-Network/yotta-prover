@@ -217,7 +217,7 @@ public:
     vector<mpz_class> quotient;
 
     // Print functions
-    void printRegs(string &log);
+    void printRegs();
     void printVars();
     void printMem();
     void printReg(string name, Goldilocks::Element &fe);

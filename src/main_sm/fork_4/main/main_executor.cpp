@@ -1057,17 +1057,17 @@ void MainExecutor::execute (ProverRequest &proverRequest, MainCommitPols &pols, 
 #ifdef LOG_TIME_STATISTICS_MAIN_EXECUTOR
                     mainMetrics.add("SMT Get", TimeDiff(t));
 #endif
+                    }
 
-                        if (bProcessBatch)
+                    if (bProcessBatch)
+                    {
+                        zkResult = eval_addReadWriteAddress(ctx, smtGetResult.value);
+                        if (zkResult != ZKR_SUCCESS)
                         {
-                            zkResult = eval_addReadWriteAddress(ctx, smtGetResult.value, key);
-                            if (zkResult != ZKR_SUCCESS)
-                            {
-                                proverRequest.result = zkResult;
-                                logError(ctx, string("Failed calling eval_addReadWriteAddress() 1 result=") + zkresult2string(zkResult));
-                                pHashDB->cancelBatch(proverRequest.uuid);
-                                return;
-                            }
+                            proverRequest.result = zkResult;
+                            logError(ctx, string("Failed calling eval_addReadWriteAddress() 1 result=") + zkresult2string(zkResult));
+                            pHashDB->cancelBatch(proverRequest.uuid);
+                            return;
                         }
                     }
 
@@ -1290,7 +1290,7 @@ void MainExecutor::execute (ProverRequest &proverRequest, MainCommitPols &pols, 
                     }
                     if (bProcessBatch)
                     {
-                        zkResult = eval_addReadWriteAddress(ctx, value, ctx.lastSWrite.key);
+                        zkResult = eval_addReadWriteAddress(ctx, value);
                         if (zkResult != ZKR_SUCCESS)
                         {
                             proverRequest.result = zkResult;
@@ -2116,7 +2116,7 @@ void MainExecutor::execute (ProverRequest &proverRequest, MainCommitPols &pols, 
 
             if (bProcessBatch)
             {
-                zkResult = eval_addReadWriteAddress(ctx, smtGetResult.value, key);
+                zkResult = eval_addReadWriteAddress(ctx, smtGetResult.value);
                 if (zkResult != ZKR_SUCCESS)
                 {
                     proverRequest.result = zkResult;
@@ -2276,7 +2276,7 @@ void MainExecutor::execute (ProverRequest &proverRequest, MainCommitPols &pols, 
 
                 if (bProcessBatch)
                 {
-                    zkResult = eval_addReadWriteAddress(ctx, scalarD, ctx.lastSWrite.key);
+                    zkResult = eval_addReadWriteAddress(ctx, scalarD);
                     if (zkResult != ZKR_SUCCESS)
                     {
                         proverRequest.result = zkResult;

@@ -25,7 +25,6 @@ public:
     vector<CborResult> array;
     uint64_t tagCount;
     vector<CborResult> tag;
-    CborResult() : result(ZKR_UNSPECIFIED), type(UNDEFINED), u64(0), tagCount(0) {};
 };
 
 string cborType2string (CborResult::ResultType type);
